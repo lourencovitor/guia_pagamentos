@@ -33,7 +33,6 @@ app.get("/pagar", async (req, res) => {
   };
   try {
     const pagamento = await MercadoPago.preferences.create(dados);
-    console.log(pagamento);
     return res.redirect(pagamento.body.init_point);
   } catch (err) {
     console.log(err);
@@ -42,7 +41,22 @@ app.get("/pagar", async (req, res) => {
 });
 
 app.post("/not", (req, res) => {
-  console.log(req.query);
+  const { id } = req.body;
+  setTimeout(() => {
+    const filtro = {
+      "order.id": id,
+    };
+    MercadoPago.payment
+      .search({
+        qs: filtro,
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, 20000);
   res.send("OK");
 });
 
