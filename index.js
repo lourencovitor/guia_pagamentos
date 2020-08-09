@@ -1,12 +1,11 @@
 const express = require("express");
 const MercadoPago = require("mercadopago");
-const { setTimeout } = require("timers");
 const app = express();
 
 MercadoPago.configure({
   sandbox: true,
   access_token:
-    "TEST-3260321011293596-061906-6cdf2c22206e79007f91b8f5642b3cf2-267336909",
+    "TEST-6444911303132115-080819-211d97db361dcb2a6d1d651683a8bd5e-209776910",
 });
 
 app.get("/", (req, res) => {
