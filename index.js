@@ -1,11 +1,11 @@
 const express = require("express");
 const MercadoPago = require("mercadopago");
 const app = express();
+const { access_token, email } = require("./config");
 
 MercadoPago.configure({
   sandbox: true,
-  access_token:
-    "TEST-6444911303132115-080819-211d97db361dcb2a6d1d651683a8bd5e-209776910",
+  access_token,
 });
 
 app.get("/", (req, res) => {
@@ -28,13 +28,12 @@ app.get("/pagar", async (req, res) => {
   // 1 // 1593163315787 // victordevtb@gmail.com  // Não foi pago
   // 2 //  1593163315782 // victordevtb2@gmail.com // Pago
 
-  var id = "" + Date.now();
-  var emailDoPagador = "victordevtb@outlook.com";
+  const id = `${Date.now()}`;
 
-  var dados = {
+  const dados = {
     items: [
       (item = {
-        id: id,
+        id,
         title: "2x video games;3x camisas",
         quantity: 1,
         currency_id: "BRL",
@@ -42,13 +41,13 @@ app.get("/pagar", async (req, res) => {
       }),
     ],
     payer: {
-      email: emailDoPagador,
+      email,
     },
     external_reference: id,
   };
 
   try {
-    var pagamento = await MercadoPago.preferences.create(dados);
+    const pagamento = await MercadoPago.preferences.create(dados);
     //Banco.SalvarPagamento({id: id, pagador: emailDoPagador});
     return res.redirect(pagamento.body.init_point);
   } catch (err) {
@@ -57,10 +56,10 @@ app.get("/pagar", async (req, res) => {
 });
 
 app.post("/not", (req, res) => {
-  var id = req.query.id;
+  const id = req.query.id;
 
   setTimeout(() => {
-    var filtro = {
+    const filtro = {
       "order.id": id,
     };
 
@@ -69,7 +68,7 @@ app.post("/not", (req, res) => {
         qs: filtro,
       })
       .then((data) => {
-        var pagamento = data.body.results[0];
+        const pagamento = data.body.results[0];
 
         if (pagamento != undefined) {
           console.log(pagamento.external_reference);
